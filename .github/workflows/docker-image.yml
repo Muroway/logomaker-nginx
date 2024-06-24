@@ -41,7 +41,8 @@ jobs:
           
   deploy:
       name: Deploy to k8s
-      if: github.ref == 'refs/heads/master' || github.ref == 'refs/tags/v'
+      #if: github.ref == 'refs/heads/master' || github.ref == 'refs/tags/v'
+      if: github.ref == 'refs/heads/master'
       needs: build
       runs-on: ubuntu-latest
       steps:
