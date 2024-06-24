@@ -38,3 +38,27 @@ jobs:
         run: |
           docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+          
+  deploy:
+      name: Deploy to k8s
+      if: github.ref == 'refs/heads/master' || github.ref == 'refs/tags/v'
+      needs: [ build ]
+      runs-on: ubuntu-latest
+      steps:
+        - name: Set the Kubernetes context
+          uses: azure/k8s-set-context@v2
+          with:
+            method: kubeconfig
+            kubeconfig: ${{ secrets.KUBECONFIG }}
+  
+        - name: Checkout source code
+          uses: actions/checkout@v3
+  
+        - name: Deploy to the Kubernetes cluster
+          uses: azure/k8s-deploy@v1
+          with:
+            namespace: default
+            manifests: |
+              kubernetes/manifest.yaml
+            images: |
+              cr.yandex/crphve47f826uus3t4li/logomaker:${{ github.sha }}
