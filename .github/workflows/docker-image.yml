@@ -42,7 +42,7 @@ jobs:
   deploy:
       name: Deploy to k8s
       if: github.ref == 'refs/heads/master' || github.ref == 'refs/tags/v'
-      needs: [ build ]
+      needs: Build, tag, and push image to Yandex Cloud Container Registry
       runs-on: ubuntu-latest
       steps:
         - name: Set the Kubernetes context
