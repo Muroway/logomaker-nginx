@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logomaker
+  namespace: myapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: logomaker
+  template:
+    metadata:
+      labels:
+        app: logomaker
+    spec:
+      containers:
+        - name: logomaker-nginx
+          image: cr.yandex/crphve47f826uus3t4li/logomaker:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: docker-yc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: logomaker
+  namespace: myapp
+spec:
+  selector:
+    app: logomaker
+  ports:
+    - port: 80
+      nodePort: 30180
+  type: NodePort
