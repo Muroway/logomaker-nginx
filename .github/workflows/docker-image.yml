@@ -29,19 +29,22 @@ jobs:
         with:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
 
+      - name: Extract Git Tag
+        run: echo "GIT_TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
 
       - name: Build, tag, and push image to Yandex Cloud Container Registry
         env:
           CR_REGISTRY: crphve47f826uus3t4li
           CR_REPOSITORY: logomaker
          #IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: ${{ env.GIT_TAG }}
         run: |
-          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$GITHUB_REF_NAME .
-          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$GITHUB_REF_NAME
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
           
   deploy:
       name: Deploy to k8s
-      if: github.ref == 'refs/heads/main' && startsWith(github.event.ref, 'refs/tags/v')
+      if: github.ref == 'refs/heads/main' || startsWith(github.event.ref, 'refs/tags/v')
       #if: github.ref == 'refs/heads/main'
       needs: build
       runs-on: ubuntu-latest
@@ -61,4 +64,4 @@ jobs:
             namespace: myapp
             manifests: manifest.yml
             images: |
-              cr.yandex/crphve47f826uus3t4li/logomaker:${{ github.sha }}
+              cr.yandex/crphve47f826uus3t4li/logomaker:$IMAGE_TAG
