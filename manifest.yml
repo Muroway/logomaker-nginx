@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: logomaker-nginx
-          image: cr.yandex/crphve47f826uus3t4li/logomaker:latest
+          image: cr.yandex/crphve47f826uus3t4li/logomaker
           imagePullPolicy: Always
           ports:
             - containerPort: 80
