@@ -111,6 +111,7 @@ jobs:
           echo "${{ github.event.ref }} - ${{ github.event.ref_type }}"
           echo "${{ github.event.release.tag_name }}"
           echo "$(git log -1 --pretty=format:%s | grep -oP 'v\d+\.\d+\.\d+')"
+          
 
       - name: Build, tag, and push image to Yandex Cloud Container Registry
         env:
