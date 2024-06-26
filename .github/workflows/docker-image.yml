@@ -105,11 +105,12 @@ jobs:
 
       - name: Extract Git Tag
         run: |
+          echo "IMAGE_TAG=${{ github.sha }}" >> $GITHUB_ENV
           echo "GITHUB_SHA is ${{ github.sha }}"
           echo "GITHUB_REF is ${{ github.ref }}"
           echo "${{ github.event.ref }} - ${{ github.event.ref_type }}"
           echo "${{ github.event.release.tag_name }}"
-          echo "$(git log -1 --pretty=format:%s | grep -oP 'v\d+\.\d+\.\d+')"
+          IMAGE_VERSION = $(echo "$(git log -1 --pretty=format:%s | grep -oP 'v\d+\.\d+\.\d+')")
           echo "$(git describe --tags --abbrev=0)"
 
 
@@ -121,7 +122,7 @@ jobs:
           IMAGE_TAG: ${{ github.event.ref }}
         run: |
           docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
-          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG:$IMAGE_VERSION
           
   deploy:
       name: Deploy to k8s      
