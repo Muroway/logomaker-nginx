@@ -58,7 +58,7 @@ jobs:
         - name: Deploy to the Kubernetes cluster
           uses: azure/k8s-deploy@v1
           with:
-            namespace: default
+            namespace: myapp
             manifests: |
               https://github.com/Muroway/logomaker-nginx/blob/main/manifest.yml
             images: |
