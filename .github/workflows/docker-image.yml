@@ -60,6 +60,6 @@ jobs:
           with:
             namespace: default
             manifests: |
-              ./manifest.yaml
+              kubernetes/manifest.yaml
             images: |
               cr.yandex/crphve47f826uus3t4li/logomaker:${{ github.sha }}
