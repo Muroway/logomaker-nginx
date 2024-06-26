@@ -7,8 +7,6 @@ on:
   push:
     branches:
       - 'main'
-    tags:
-      - 'v*'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -43,7 +41,7 @@ jobs:
           
   deploy:
       name: Deploy to k8s
-      if: github.ref == 'refs/heads/main' || startsWith(github.event.ref, 'refs/tags/v')
+      if: github.ref == 'refs/heads/main' && startsWith(github.event.ref, 'refs/tags/v')
       #if: github.ref == 'refs/heads/main'
       needs: build
       runs-on: ubuntu-latest
