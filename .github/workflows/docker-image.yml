@@ -39,7 +39,7 @@ jobs:
           CR_REGISTRY: crphve47f826uus3t4li
           CR_REPOSITORY: logomaker
          #IMAGE_TAG: ${{ github.sha }}
-          IMAGE_TAG: ${{ github.event.head_commit.ref }}
+          IMAGE_TAG: ${{ github.event.ref }}
         run: |
           docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
