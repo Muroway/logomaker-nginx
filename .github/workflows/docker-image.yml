@@ -121,7 +121,8 @@ jobs:
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
           
   deploy:
-      name: Deploy to k8s      if: github.ref == 'refs/heads/main' || startsWith(github.event.ref, 'refs/tags/v')
+      name: Deploy to k8s      
+      if: github.ref == 'refs/heads/main' || startsWith(github.event.ref, 'refs/tags/v')
       #if: github.ref == 'refs/heads/main'
       needs: build
       runs-on: ubuntu-latest
