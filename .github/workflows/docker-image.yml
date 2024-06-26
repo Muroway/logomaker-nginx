@@ -60,6 +60,6 @@ jobs:
           with:
             namespace: myapp
             manifests: |
-              https://github.com/Muroway/logomaker-nginx/blob/main/manifest.yml
+              'https://github.com/Muroway/logomaker-nginx/blob/main/manifest.yml'
             images: |
               cr.yandex/crphve47f826uus3t4li/logomaker:${{ github.sha }}
