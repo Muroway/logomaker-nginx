@@ -105,20 +105,20 @@ jobs:
 
       - name: Extract Git Tag
         run: |
-          IMAGE_VERSION=$(git log -1 --pretty=format:%s | grep -oP 'v\d+\.\d+\.\d+')
-          echo "IMAGE_VERSION=$IMAGE_VERSION" >> $GITHUB_ENV
+          IMAGE_TAG=$(git log -1 --pretty=format:%s | grep -oP 'v\d+\.\d+\.\d+')
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
 
       - name: Build, tag, and push image to Yandex Cloud Container Registry
         env:
           CR_REGISTRY: crphve47f826uus3t4li
           CR_REPOSITORY: logomaker
-          IMAGE_TAG: logomaker-nginx
+          #IMAGE_TAG: logomaker-nginx
 
         #IMAGE_TAG: ${{ github.event.ref }}
         run: |
-          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ env.IMAGE_TAG }} ${{ env.IMAGE_VERSION }} .
-          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ env.IMAGE_TAG }} ${{ env.IMAGE_VERSION }}
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ env.IMAGE_TAG }} .
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ env.IMAGE_TAG }}
           
   # deploy:
   #     name: Deploy to k8s      
