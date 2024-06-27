@@ -103,7 +103,7 @@ jobs:
         with:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
 
-      - name: Extract Git Tag
+      - name: Extract commit version for create image tag
         run: |
           IMAGE_TAG=$(git log -1 --pretty=format:%s | grep -oP 'v\d+\.\d+\.\d+')
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
@@ -148,5 +148,5 @@ jobs:
   #         env:
   #           RELEASE_NAME: logomaker-nginx
   #           NAMESPACE: myapp
-  #         run: |
-  #           helm upgrade --install ${{ env.RELEASE_NAME }} ./logomaker-0.0.1.tgz --namespace ${{ env.NAMESPACE }} --set container.image=$IMAGE_TAG_$IMAGE_VERSION
+  #         run: 
+  #           helm upgrade --install ${{ env.RELEASE_NAME }} ./logomaker-0.0.1.tgz --namespace ${{ env.NAMESPACE }} --set container.tag=${{ env.IMAGE_TAG }}
