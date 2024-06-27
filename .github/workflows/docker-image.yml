@@ -149,4 +149,4 @@ jobs:
             RELEASE_NAME: logomaker-nginx
             NAMESPACE: myapp
           run: |
-            helm upgrade --install ${{ env.RELEASE_NAME }} ./logomaker-0.0.1.tgz --namespace ${{ env.NAMESPACE }} --set image.tag=${{ env.IMAGE_VERSION }}
+            helm upgrade --install ${{ env.RELEASE_NAME }} ./logomaker-0.0.1.tgz --namespace ${{ env.NAMESPACE }} --set container.image=${{ env.IMAGE_VERSION }}
