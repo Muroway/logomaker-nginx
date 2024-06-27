@@ -81,8 +81,6 @@ on:
       - 'main'
     tags:
       - 'v*'
-env:
-  IMAGE_TAG: logomaker
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -119,7 +117,7 @@ jobs:
         env:
           CR_REGISTRY: crphve47f826uus3t4li
           CR_REPOSITORY: logomaker
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: logomaker
 
         #IMAGE_TAG: ${{ github.event.ref }}
         run: |
