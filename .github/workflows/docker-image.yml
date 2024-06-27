@@ -107,7 +107,6 @@ jobs:
 
       - name: Extract Git Tag
         run: |
-          # echo "IMAGE_TAG=${{ github.sha }}" >> $GITHUB_ENV
           IMAGE_VERSION=$(git log -1 --pretty=format:%s | grep -oP 'v\d+\.\d+\.\d+')
           echo "GITHUB_SHA is ${{ github.sha }}"
           echo "GITHUB_REF is ${{ github.ref }}"
