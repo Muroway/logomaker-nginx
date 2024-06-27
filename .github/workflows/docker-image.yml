@@ -120,33 +120,33 @@ jobs:
           docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ env.IMAGE_TAG }} .
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ env.IMAGE_TAG }}
           
-  # deploy:
-  #     name: Deploy to k8s      
-  #     if: github.ref == 'refs/heads/main' || startsWith(github.event.ref, 'refs/tags/v')
-  #     #if: github.ref == 'refs/heads/main'
-  #     needs: build
-  #     runs-on: ubuntu-latest
-  #     steps:
-  #       - name: Set the Kubernetes context
-  #         uses: azure/k8s-set-context@v2
-  #         with:
-  #           method: kubeconfig
-  #           kubeconfig: ${{ secrets.KUBECONFIG }}
+  deploy:
+      name: Deploy to k8s      
+      if: github.ref == 'refs/heads/main' || startsWith(github.event.ref, 'refs/tags/v')
+      #if: github.ref == 'refs/heads/main'
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+        - name: Set the Kubernetes context
+          uses: azure/k8s-set-context@v2
+          with:
+            method: kubeconfig
+            kubeconfig: ${{ secrets.KUBECONFIG }}
   
-  #       - name: Checkout source code
-  #         uses: actions/checkout@v3
+        - name: Checkout source code
+          uses: actions/checkout@v3
   
-  #       # - name: Deploy to the Kubernetes cluster 
-  #       #   uses: azure/k8s-deploy@v1
-  #       #   with:
-  #       #     namespace: myapp
-  #       #     manifests: manifest.yml
-  #       #     images: |
-  #       #       cr.yandex/crphve47f826uus3t4li/logomaker:$IMAGE_TAG
+        # - name: Deploy to the Kubernetes cluster 
+        #   uses: azure/k8s-deploy@v1
+        #   with:
+        #     namespace: myapp
+        #     manifests: manifest.yml
+        #     images: |
+        #       cr.yandex/crphve47f826uus3t4li/logomaker:$IMAGE_TAG
 
-  #       - name: Deploy to Kubernetes with Helm
-  #         env:
-  #           RELEASE_NAME: logomaker-nginx
-  #           NAMESPACE: myapp
-  #         run: 
-  #           helm upgrade --install ${{ env.RELEASE_NAME }} ./logomaker-0.0.1.tgz --namespace ${{ env.NAMESPACE }} --set container.tag=${{ env.IMAGE_TAG }}
+        - name: Deploy to Kubernetes with Helm
+          env:
+            RELEASE_NAME: logomaker-nginx
+            NAMESPACE: myapp
+          run: 
+            helm upgrade --install ${{ env.RELEASE_NAME }} ./logomaker-0.0.1.tgz --namespace ${{ env.NAMESPACE }} --set container.tag=${{ env.IMAGE_TAG }}
