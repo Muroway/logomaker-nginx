@@ -107,18 +107,13 @@ jobs:
         run: |
           IMAGE_VERSION=$(git log -1 --pretty=format:%s | grep -oP 'v\d+\.\d+\.\d+')
           echo "IMAGE_VERSION=$IMAGE_VERSION" >> $GITHUB_ENV
-          echo "GITHUB_SHA is ${{ github.sha }}"
-          echo "GITHUB_REF is ${{ github.ref }}"
-          echo "${{ github.event.ref }} - ${{ github.event.ref_type }}"
-          echo "${{ github.event.release.tag_name }}"
-          echo "$(git describe --tags --abbrev=0)"
 
 
       - name: Build, tag, and push image to Yandex Cloud Container Registry
         env:
           CR_REGISTRY: crphve47f826uus3t4li
           CR_REPOSITORY: logomaker
-          IMAGE_TAG: logomaker
+          IMAGE_TAG: logomaker-nginx
 
         #IMAGE_TAG: ${{ github.event.ref }}
         run: |
