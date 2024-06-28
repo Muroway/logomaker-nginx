@@ -201,8 +201,8 @@ jobs:
 
         #IMAGE_TAG: ${{ github.event.ref }}
         run: |
-          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ github.sha }}_${{ github.event.release.tag_name }} .
-          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ github.sha }}_${{ github.event.release.tag_name }}
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ github.sha }}_${{ github.event.ref }} .
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ github.sha }}_${{ github.event.ref }}
           
   deploy:
       name: Deploy to k8s      
@@ -234,7 +234,7 @@ jobs:
             RELEASE_NAME: logomaker-nginx
             NAMESPACE: myapp
           run: 
-            helm upgrade --install ${{ env.RELEASE_NAME }} ./logomaker-0.0.2.tgz --namespace ${{ env.NAMESPACE }} --set container.tag=${{ github.sha }}_${{ github.event.release.tag_name }}
+            helm upgrade --install ${{ env.RELEASE_NAME }} ./logomaker-0.0.2.tgz --namespace ${{ env.NAMESPACE }} --set container.tag=${{ github.sha }}_${{ github.event.ref }}
   debug:
     name: Debug
     runs-on: ubuntu-latest
