@@ -187,10 +187,10 @@ jobs:
         with:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
 
-      - name: Extract commit version for create image tag
-        run: |
-          IMAGE_TAG=$(git log -1 --pretty=format:%s | grep -oP 'v\d+\.\d+\.\d+')
-          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+      # - name: Extract commit version for create image tag
+      #   run: |
+      #     IMAGE_TAG=$(git log -1 --pretty=format:%s | grep -oP 'v\d+\.\d+\.\d+')
+      #     echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
 
       - name: Build, tag, and push image to Yandex Cloud Container Registry
@@ -206,7 +206,7 @@ jobs:
           
   deploy:
       name: Deploy to k8s      
-      if: github.ref == 'refs/heads/main' || startsWith(github.event.ref, 'refs/tags/v')
+      if: startsWith(github.event.head_commit.message, 'refs/tags/v')
       #if: github.ref == 'refs/heads/main'
       needs: build
       runs-on: ubuntu-latest
