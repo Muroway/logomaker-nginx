@@ -201,12 +201,12 @@ jobs:
 
         #IMAGE_TAG: ${{ github.event.ref }}
         run: |
-          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ github.event.head_commit.message }}${{ github.event.release.tag_name }} .
-          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ github.event.head_commit.message }}${{ github.event.release.tag_name }}
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ github.sha }}${{ github.event.release.tag_name }} .
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ github.sha }}${{ github.event.release.tag_name }}
           
   deploy:
       name: Deploy to k8s      
-      if: startsWith(github.event.ref, 'refs/tags/v')
+      if: github.ref == 'refs/heads/main' || startsWith(github.event.ref, 'refs/tags/v')
       #if: github.ref == 'refs/heads/main'
       needs: build
       runs-on: ubuntu-latest
