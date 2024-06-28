@@ -201,8 +201,8 @@ jobs:
 
         #IMAGE_TAG: ${{ github.event.ref }}
         run: |
-          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ github.event.head_commit.message }} .
-          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ github.event.head_commit.message }}
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ github.event.head_commit.message }}${{ github.event.release.tag_name }} .
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:${{ github.event.head_commit.message }}${{ github.event.release.tag_name }}
           
   deploy:
       name: Deploy to k8s      
@@ -228,9 +228,20 @@ jobs:
         #     images: |
         #       cr.yandex/crphve47f826uus3t4li/logomaker:$IMAGE_TAG
 
+
         - name: Deploy to Kubernetes with Helm
           env:
             RELEASE_NAME: logomaker-nginx
             NAMESPACE: myapp
           run: 
-            helm upgrade --install ${{ env.RELEASE_NAME }} ./logomaker-0.0.2.tgz --namespace ${{ env.NAMESPACE }} --set container.tag=${{ github.event.head_commit.message }}
+            helm upgrade --install ${{ env.RELEASE_NAME }} ./logomaker-0.0.2.tgz --namespace ${{ env.NAMESPACE }} --set container.tag=${{ github.event.release.tag_name }}
+  debug:
+    name: Debug
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump env
+        run: env | sort
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
