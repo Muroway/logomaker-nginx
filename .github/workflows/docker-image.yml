@@ -215,7 +215,7 @@ jobs:
             RELEASE_NAME: logomaker-nginx
             NAMESPACE: myapp
           run: 
-            helm upgrade --install ${{ env.RELEASE_NAME }} ./logomaker_helm --namespace ${{ env.NAMESPACE }} --set container.tag=${{ github.sha }}_${{ github.ref_name }}
+            helm upgrade --install ${{ env.RELEASE_NAME }} logomaker-0.0.3.tgz --namespace ${{ env.NAMESPACE }} --set container.tag=${{ github.sha }}_${{ github.ref_name }}
 
 
   debug:
